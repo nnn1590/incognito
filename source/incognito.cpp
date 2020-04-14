@@ -16,7 +16,7 @@ bool fileExists(const char* path)
 
 Incognito::Incognito()
 {
-	if (fsOpenBisStorage(&m_sh, FsBisStorageId_CalibrationBinary))
+	if (fsOpenBisStorage(&m_sh, FsBisPartitionId_CalibrationBinary))
 	{
 		printf("error: failed to open cal0 partition.\n");
 		m_open = false;
@@ -110,9 +110,9 @@ bool Incognito::backup()
 	return true;
 }
 
-u64 Incognito::size()
+s64 Incognito::size()
 {
-	u64 s = 0;
+	s64 s = 0;
 	fsStorageGetSize(&m_sh, &s);
 	return s;
 }
@@ -207,7 +207,7 @@ bool Incognito::writeCal0Hash()
 	return writeHash(0x20, 0x0040, calibrationDataSize());
 }
 
-bool Incognito::writeHash(const u64 hashOffset, const u64 offset, const u64 sz)
+bool Incognito::writeHash(const s64 hashOffset, const s64 offset, const s64 sz)
 {
 	u8* buffer = new u8[sz];
 
@@ -231,16 +231,16 @@ bool Incognito::writeHash(const u64 hashOffset, const u64 offset, const u64 sz)
 	return true;
 }
 
-void Incognito::print(const u8* buffer, const u64 sz) const
+void Incognito::print(const u8* buffer, const s64 sz) const
 {
-	for (u64 i = 0; i < sz; i++)
+	for (s64 i = 0; i < sz; i++)
 	{
 		printf("%2.2X ", buffer[i]);
 	}
 	printf("\n");
 }
 
-bool Incognito::verifyHash(const u64 hashOffset, const u64 offset, const u64 sz)
+bool Incognito::verifyHash(const s64 hashOffset, const s64 offset, const s64 sz)
 {
 	bool result = false;
 	u8* buffer = new u8[sz];
@@ -279,11 +279,11 @@ bool Incognito::verifyHash(const u64 hashOffset, const u64 offset, const u64 sz)
 	return result;
 }
 
-bool Incognito::erase(const u64 offset, const u64 sz)
+bool Incognito::erase(const s64 offset, const s64 sz)
 {
 	u8 zero = 0;
 
-	for (u64 i = 0; i < sz; i++)
+	for (s64 i = 0; i < sz; i++)
 	{
 		fsStorageWrite(&m_sh, offset + i, &zero, 1);
 	}
@@ -291,7 +291,7 @@ bool Incognito::erase(const u64 offset, const u64 sz)
 	return true;
 }
 
-bool Incognito::copy(FILE* f, const u64 offset, const u64 sz)
+bool Incognito::copy(FILE* f, const s64 offset, const s64 sz)
 {
 	u8* buffer = new u8[size()];
 

@@ -11,7 +11,7 @@ bool end()
 	{
 		hidScanInput();
 
-		u64 keys = hidKeysDown(CONTROLLER_P1_AUTO);
+		s64 keys = hidKeysDown(CONTROLLER_P1_AUTO);
 
 		if (keys & KEY_PLUS)
 		{
@@ -32,7 +32,7 @@ bool confirm()
 	{
 		hidScanInput();
 
-		u64 keys = hidKeysDown(CONTROLLER_P1_AUTO);
+		s64 keys = hidKeysDown(CONTROLLER_P1_AUTO);
 
 		if (keys & KEY_PLUS || keys & KEY_B || keys & KEY_X || keys & KEY_Y)
 		{
@@ -139,7 +139,7 @@ bool mainMenu()
 	{
 		hidScanInput();
 
-		u64 keys = hidKeysDown(CONTROLLER_P1_AUTO);
+		s64 keys = hidKeysDown(CONTROLLER_P1_AUTO);
 
 		if (keys & KEY_A)
 		{
